@@ -31,3 +31,11 @@ Console(removeDuplicates, ["apple", "banana", "apple", "cherry", "banana"])
 // Latihan 8
 import { formatPhoneNumber } from "./func/format_phone_number.js"
 Console(formatPhoneNumber, [1, 2, 3, 4, 5, 6, 7, 8, 9, 0])
+
+// Latihan 9
+import { camelToSnake } from "./func/camel_to_snake.js"
+Console(camelToSnake, "thisIsAFunction")
+
+// Latihan 10
+import { findShortestWord } from "./func/find_shortest_word.js"
+Console(findShortestWord, "I love TypeScript and programming")
