@@ -46,21 +46,21 @@ Console(findShortestWord, "I love TypeScript and programming")
 /* BAGIAN LATIHAN FUNGSI CALLBACK */
 
 // Latihan 1
-import { calculate, multiple } from "./func/callback/calculate.js"
+import { calculate, multiple } from "./func/callbacks/calculate.js"
 Console(calculate, 10, 5, multiple)
 
 // Latihan 2
-import { evenNumber, processArray, square } from "./func/callback/process_array.js"
+import { evenNumber, processArray, square } from "./func/callbacks/process_array.js"
 Console(processArray, [1, 2, 3, 4, 5], square)
 
 // Latihan 3
-import { filterPrimes, isPrime } from "./func/callback/filter_primes.js"
+import { filterPrimes, isPrime } from "./func/callbacks/filter_primes.js"
 Console(filterPrimes, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], isPrime)
 
 // Latihan 4
-import { processWords, reverseWord } from "./func/callback/process_words.js"
+import { processWords, reverseWord } from "./func/callbacks/process_words.js"
 Console(processWords, 'Typescript is cool', reverseWord)
 
 // Latihan 5
-import { calculateTotal } from "./func/callback/calculate_total.js"
+import { calculateTotal } from "./func/callbacks/calculate_total.js"
 Console(calculateTotal, [1, 2, 3, 4, 5], evenNumber, multiple)

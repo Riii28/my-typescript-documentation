@@ -4,4 +4,6 @@ export default {
   transform: {
     "^.+\.tsx?$": ["ts-jest",{}],
   },
+  testMatch: ["**/src/tests/**/*.test.ts"],
+  transformIgnorePatterns: ["/node_modules/", "/dist/"]
 };

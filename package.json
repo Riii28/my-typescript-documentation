@@ -1,5 +1,5 @@
 {
-  "name": "learn-ts-2",
+  "name": "learn typescript",
   "version": "1.0.0",
   "main": "main.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "type": "module",
   "keywords": [],
-  "author": "",
+  "author": "Ridho Irvan Nurhidayat",
   "license": "ISC",
   "description": "",
   "devDependencies": {
