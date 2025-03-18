@@ -46,7 +46,7 @@ Console(findShortestWord, "I love TypeScript and programming")
 /* BAGIAN LATIHAN FUNGSI CALLBACK */
 
 // Latihan 1
-import { calculate, multiple, sum } from "./func/callback/calculate.js"
+import { calculate, multiple } from "./func/callback/calculate.js"
 Console(calculate, 10, 5, multiple)
 
 // Latihan 2
@@ -63,4 +63,4 @@ Console(processWords, 'Typescript is cool', reverseWord)
 
 // Latihan 5
 import { calculateTotal } from "./func/callback/calculate_total.js"
-Console(calculateTotal, [1, 2, 3, 4, 5], evenNumber, sum)
+Console(calculateTotal, [1, 2, 3, 4, 5], evenNumber, multiple)

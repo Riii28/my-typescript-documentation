@@ -1,10 +1,10 @@
 {
   "compilerOptions": {
     "target": "ES6",
-    "module": "NodeNext",
+    "module": "ES6",
     "rootDir": "./src",
     "outDir": "./dist",
-    "moduleResolution": "nodenext",
+    "moduleResolution": "bundler",
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
     "strict": true,
