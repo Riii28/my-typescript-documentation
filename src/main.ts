@@ -1,4 +1,6 @@
-import { Console } from "./func/index.js"
+import { Console } from "./index.js"
+
+/* BAGIAN LATIHAN FUNGSI */
 
 // Latihan 1
 import { shuffleString } from "./func/shuffle_string.js"
@@ -39,3 +41,26 @@ Console(camelToSnake, "thisIsAFunction")
 // Latihan 10
 import { findShortestWord } from "./func/find_shortest_word.js"
 Console(findShortestWord, "I love TypeScript and programming")
+
+
+/* BAGIAN LATIHAN FUNGSI CALLBACK */
+
+// Latihan 1
+import { calculate, multiple, sum } from "./func/callback/calculate.js"
+Console(calculate, 10, 5, multiple)
+
+// Latihan 2
+import { evenNumber, processArray, square } from "./func/callback/process_array.js"
+Console(processArray, [1, 2, 3, 4, 5], square)
+
+// Latihan 3
+import { filterPrimes, isPrime } from "./func/callback/filter_primes.js"
+Console(filterPrimes, [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], isPrime)
+
+// Latihan 4
+import { processWords, reverseWord } from "./func/callback/process_words.js"
+Console(processWords, 'Typescript is cool', reverseWord)
+
+// Latihan 5
+import { calculateTotal } from "./func/callback/calculate_total.js"
+Console(calculateTotal, [1, 2, 3, 4, 5], evenNumber, sum)
