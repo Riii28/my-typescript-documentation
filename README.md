@@ -2,16 +2,10 @@
 
 ## Cara menjalankan proyek
 
-### Method dalam Promise
-```javascript 
-.then(callback) → // Dipanggil jika Promise berhasil (fulfilled)
+1. Cloning repositori ini dengan ``git clone https://github.com/Riii28/typescript-documentation.git``
 
-.catch(callback) → // Dipanggil jika Promise gagal (rejected).
+2. Install dependensi proyek dengan ``npm install``
 
-.finally(callback) → // Dipanggil setelah Promise selesai (baik sukses atau gagal).
+3. Untuk menjalakan unit test bisa dengan ``npm test`` atau jika ingin dengan path yang spesifik ``npm test ./{nama folder dalam tests}/{nama file}.test.ts``
 
-Promise.all([...]) → // Menjalankan banyak Promise secara paralel dan menunggu semuanya selesai.
-
-Promise.race([...]) → // Menjalankan banyak Promise dan mengambil yang selesai lebih dulu.
-
-Promise.allSettled([...]) → // Menjalankan banyak Promise dan mengembalikan hasil dari semuanya, baik yang berhasil atau gagal```
+4. Untuk menjalankan kode yang tidak di dalam tests bisa dengan ``npm start`` maka akan mengkompilasi kode typescript dan langsung menjalakannya

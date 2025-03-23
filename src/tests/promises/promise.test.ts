@@ -11,7 +11,6 @@ describe('promises', () => {
                 }, 1000)
             })
         }
-
         await expect(fetchUserData(1)).resolves.toEqual({ name: 'ridho', id: 1 })
     })
 
@@ -69,7 +68,9 @@ describe('promises', () => {
         }
 
         async function fetchMultipleUsers(ids: number[]): Promise<User[]> {
-            const responses = await Promise.all(ids.map((id) => fetch(`https://jsonplaceholder.typicode.com/users/${id}`)))
+            const responses = await Promise.all(
+                ids.map((id) => fetch(`https://jsonplaceholder.typicode.com/users/${id}`))
+            )
             const data = await Promise.all(responses.map(async (res) => {
                 if (!res.ok) {
                     throw new Error('User not found')
@@ -168,7 +169,7 @@ describe('promises', () => {
             'kory.org',
             'melissa.tv',
             'yesenia.net'
-        ])    
+        ])
     })
 
     test('latihan 6: ambil data postingan dan hitung kata terbanyak', async () => {
@@ -200,19 +201,46 @@ describe('promises', () => {
             
             words.forEach((_, i) => {
                 const str: string = words[i]!
-                if (obj[str]) {
-                    obj[str] += 1
-                } else {
-                    obj[str] = 1
-                }
+                obj[str] ? obj[str] += 1 : obj[str] = 1
             })
 
             const maxEntry: [string, number] = Object.entries(obj)
                 .reduce((max, curr) => curr[1] > max[1] ? curr : max)
-            
+
             return maxEntry[0]
         }
         await expect(fetchAndAnalyzePosts([1,2,3,4,5])).resolves.toBe('et')
+    })
+
+    test('latihan 7: ambil data komentar dan hitung panjang rata-rata', async () => {
+        async function fetchAndAnalyzeComments(postIds: number[]): Promise<any> {
+            const responses: Response[] = await Promise.all(
+                postIds.map((id) => fetch(`https://jsonplaceholder.typicode.com/comments?postId=${id}`))
+            )
+
+            const data = await Promise.all(
+                responses.map(async (res) => {
+                    if (!res.ok) {
+                        throw new Error('gagal mengambil komentar')
+                    }
+                    return res.json()
+                })
+            )
+            
+            const allComents: { body: string }[] = data
+                .flatMap((values) => values)
+
+            const totalCommentLength: number = allComents
+                .reduce((acc, curr) => {
+                    return acc + curr.body.length
+                }, 0)
+
+            const average: number = Math.round(
+                totalCommentLength / allComents.length
+            )
+            return average
+        }
+        await expect(fetchAndAnalyzeComments([1,2])).resolves.toBeGreaterThan(50)
     })
 })
 
