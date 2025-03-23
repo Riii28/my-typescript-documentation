@@ -50,7 +50,7 @@ describe('promises', () => {
             return response.json()
         }
 
-        await expect(fetchUser(1).then(data => data)).resolves.toMatchObject({
+        await expect(fetchUser(1)).resolves.toMatchObject({
             id: 1,
             name: "Leanne Graham",
             username: "Bret",
@@ -109,6 +109,110 @@ describe('promises', () => {
                 phone: "1-463-123-4447"
             }
         ])
+    })
+    
+    test('latihan 5: fetch data user dan format namanya', async () => {
+        interface User {
+            id: number
+            name: string
+            username: string
+            email: string
+            phone: string
+        }
+
+        async function fetchAndFormatUser(id: number): Promise<string> {
+            const response = await fetch(`https://jsonplaceholder.typicode.com/users/${id}`)
+
+            if (!response.ok) {
+                throw new Error('Gagal mengambil user')
+            }
+
+            const data = await response.json() as User
+            return data?.name.toUpperCase()
+        }
+
+        await expect(fetchAndFormatUser(1)).resolves.toBe('LEANNE GRAHAM')
+    })
+
+    test('latihan 6: fetch data user dan ambil domain email unik', async () => {
+        interface User {
+            id: number
+            email: string
+        }
+
+        async function fetchUniqueDomains(users: number[]): Promise<string[]> {
+            const responses = await Promise.allSettled(
+                users.map((user) => fetch(`https://jsonplaceholder.typicode.com/users/${user}`))
+            )
+
+            const data = await Promise.allSettled(
+                responses
+                    .filter((res): res is PromiseFulfilledResult<Response> => res.status === 'fulfilled')
+                    .map((res) => res.value.json())
+            )
+
+            const emails = data
+                .filter((res): res is PromiseFulfilledResult<User> => res.status === 'fulfilled')
+                .map((res) => res.value.email)
+
+            const domains = emails
+                .map(email => email.split('@')[1])
+                .filter((domain): domain is string => !!domain)
+
+            return [...new Set(domains)].sort()
+        }
+
+        await expect(fetchUniqueDomains([1, 2, 3, 4, 5])).resolves.toEqual([
+            'annie.ca',
+            'april.biz',
+            'kory.org',
+            'melissa.tv',
+            'yesenia.net'
+        ])    
+    })
+
+    test('latihan 6: ambil data postingan dan hitung kata terbanyak', async () => {
+        async function fetchAndAnalyzePosts(postsIds: number[]): Promise<string> {
+            const responses: Response[] = await Promise.all(
+                postsIds.map((id) => fetch(`https://jsonplaceholder.typicode.com/posts/${id}`))
+            )
+
+            const data: { body: string }[] = await Promise.all(
+                responses.map((res) => {
+                    if (!res.ok) {
+                        throw new Error('postingan tidak ditemukan')
+                    }
+                    return res.json()
+                })
+            )
+
+            const posts: string = data
+                .map((post) => post.body)
+                .join('')
+                .toLowerCase()
+            
+            const words: string[] = posts
+                .split(/\W+/)
+                .filter(Boolean)
+                .sort()
+
+            let obj: Record<string, number> = {}
+            
+            words.forEach((_, i) => {
+                const str: string = words[i]!
+                if (obj[str]) {
+                    obj[str] += 1
+                } else {
+                    obj[str] = 1
+                }
+            })
+
+            const maxEntry: [string, number] = Object.entries(obj)
+                .reduce((max, curr) => curr[1] > max[1] ? curr : max)
+            
+            return maxEntry[0]
+        }
+        await expect(fetchAndAnalyzePosts([1,2,3,4,5])).resolves.toBe('et')
     })
 })
 
