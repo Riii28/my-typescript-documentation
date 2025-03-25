@@ -57,7 +57,6 @@ describe('promises', () => {
             phone: "1-770-736-8031 x56442"
           })
     })
-
     test('latihan 4: fetch banyak user secara paralel', async () => {
         interface User {
             id: number
