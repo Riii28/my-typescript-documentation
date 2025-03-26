@@ -79,23 +79,34 @@ describe("studi kasus", () => {
          );
       }
 
-      const customers = customerSpending(orders)
+      function productCount(orders: Order[]): Record<string, number> {
+         return orders
+            .flatMap((order) => order.items)
+            .reduce((acc, { name, quantity }) => {
+               acc[name] = (acc[name] || 0) + quantity;
+               return acc;
+            }, {} as Record<string, number>);
+      }
 
-      console.info(biggestSpender(customers))
-
-      //   const mostOrdered = orders
-      //      .map((order) => order.items)
-      //      .flatMap((flat) => flat)
-      //      .reduce((acc, curr) => (curr.quantity > acc.quantity ? curr : acc));
+      function mostOrdered(ordered: Record<string, number>): {
+         name: string;
+         quantity: number;
+      } {
+         return Object.entries(ordered).reduce(
+            (acc, [name, quantity]) =>
+               quantity > acc.quantity ? { name, quantity } : acc,
+            { name: "", quantity: 0 }
+         );
+      }
 
       expect(totalRevenue(orders)).toBe(4125);
-      //   expect(biggestSpender).toEqual({
-      //      id: 4,
-      //      customer: "Charlie",
-      //      items: [{ name: "Laptop", quantity: 2 }],
-      //      totalAmount: 2400,
-      //      date: "2025-03-18",
-      //   });
-      //   expect(mostOrdered).toEqual({ name: "Mouse", quantity: 3 });
+      expect(biggestSpender(customerSpending(orders))).toEqual({
+         customer: "Charlie",
+         amount: 2400,
+      });
+      expect(mostOrdered(productCount(orders))).toEqual({
+         name: "Mouse",
+         quantity: 3,
+      });
    });
 });
