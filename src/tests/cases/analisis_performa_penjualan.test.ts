@@ -14,8 +14,8 @@ interface SalesPerformance {
       category: string;
       totalSales: number;
       uniqueProducts: number;
-      growthPercentage: number;
-   };
+      growthPercentage: string;
+   }[];
    highestGrowtCategory: string;
 }
 
@@ -65,14 +65,20 @@ describe("studi kasus analisis performa penjualan", () => {
    function analyzeSalesPerformance(
       transactions: Transaction[],
       prevTransactions: Transaction[]
-   ): any {
+   ): SalesPerformance {
       const newTotalTransactions = transactions
          .filter(({ status }) => status === "completed")
          .reduce((acc, { product, price, quantity }) => {
-            acc[product.category] =
-               (acc[product.category] || 0) + quantity * price;
+            if (!acc[product.category]) {
+               acc[product.category] = {
+                  totalSales: 0,
+                  uniqueProducts: new Set<string>(),
+               };
+            }
+            acc[product.category]!.totalSales += quantity * price;
+            acc[product.category]!.uniqueProducts.add(product.name);
             return acc;
-         }, {} as Record<string, number>);
+         }, {} as Record<string, { totalSales: number; uniqueProducts: Set<string> }>);
 
       const prevTotalTransactions = prevTransactions
          .filter(({ status }) => status === "completed")
@@ -87,19 +93,67 @@ describe("studi kasus analisis performa penjualan", () => {
          ...Object.keys(prevTotalTransactions),
       ]);
 
-      const analysis = Array.from(allCategories).map((category) => {
-         const newSales = newTotalTransactions[category] || 0;
+      let highestGrowthCategory = "";
+      let maxGrowth = -Infinity;
+      let totalSales = 0;
+
+      const categoryPerformance = Array.from(allCategories).map((category) => {
+         const newSales = newTotalTransactions[category]?.totalSales || 0;
          const prevSales = prevTotalTransactions[category] || 0;
-         const percentage = prevSales
-            ? ((prevSales - newSales) / prevSales) * 100
+         const uniqueProducts =
+            newTotalTransactions[category]?.uniqueProducts.size || 0;
+
+         const growthPercentage = prevSales
+            ? ((newSales - prevSales) / prevSales) * 100
             : newSales > 0
             ? 100
             : 0;
+
+         if (growthPercentage > maxGrowth) {
+            maxGrowth = growthPercentage;
+            highestGrowthCategory = category;
+         }
+
+         totalSales += newSales;
+
+         return {
+            category,
+            totalSales: newSales,
+            uniqueProducts,
+            growthPercentage: growthPercentage.toFixed(2) + '%',
+         };
       });
 
-      console.info(analysis);
+      return {
+         totalSales,
+         categoryPerformance,
+         highestGrowtCategory: highestGrowthCategory,
+      };
    }
+
    it("should work", () => {
-      analyzeSalesPerformance(transactions, previousTransactions);
+      const result = analyzeSalesPerformance(
+         transactions,
+         previousTransactions
+      );
+
+      expect(result).toMatchObject({
+         totalSales: 48900000,
+         categoryPerformance: [
+            {
+               category: "Electronics",
+               totalSales: 47000000,
+               uniqueProducts: 2,
+               growthPercentage: '213.33%',
+            },
+            {
+               category: "Accessories",
+               totalSales: 1900000,
+               uniqueProducts: 2,
+               growthPercentage: '533.33%',
+            },
+         ],
+         highestGrowtCategory: "Accessories",
+      });
    });
 });

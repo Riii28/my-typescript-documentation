@@ -1,4 +1,5 @@
 import { Transaction, TransactionWithCategory } from "../../types/cases/basic";
+import fetcher from "./fetcher";
 
 describe("basic", () => {
    test("latihan 1: filter dan transform data", () => {
@@ -411,7 +412,6 @@ describe("basic", () => {
 
                acc[product.category]!.totalSales += quantity * price;
                acc[product.category]!.uniqueProducts.add(product.name);
-
                return acc;
             }, {} as Record<string, { totalSales: number; uniqueProducts: Set<string> }>);
 
@@ -445,5 +445,24 @@ describe("basic", () => {
             percentage: "7.66%",
          },
       ]);
+   });
+
+   test("latihan 7: filter dan sort dari API", async () => {
+      async function fetchData() {
+         const data: { title: string; price: number }[] = await fetcher(
+            "https://fakestoreapi.com/products",
+            { timeout: 5000 }
+         );
+
+         const start = (1 - 1) * 5;
+         const end = start + 5;
+
+         return data
+            .filter(({ price }) => price > 50)
+            .sort((a, b) => a.price - b.price)
+            .slice(start, end);
+      }
+
+      console.info(await fetchData());
    });
 });
