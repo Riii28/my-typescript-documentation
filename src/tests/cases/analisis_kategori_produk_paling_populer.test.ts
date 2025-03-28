@@ -40,7 +40,7 @@ describe("studi kasus analisis kategori produk paling populer", () => {
 
                      return {
                         category: product.category,
-                        quantity: quantity,
+                        quantity,
                      };
                   } catch (err) {
                      throw new Error(`${err}`);
